@@ -93,19 +93,7 @@ void sliceobj::init(std::vector<glm::vec3> &points, std::vector<glm::vec3> &norm
   // The fragcoord locations are done in (floating point type) rounded-to-the-nearest-integer
   //   pixels.
 
-
-
-
-
-
-
-
-
   ortho_num = points.size() - ortho_start;
-
-
-
-
 
 
   persp_start = points.size();
@@ -162,26 +150,9 @@ void sliceobj::init(std::vector<glm::vec3> &points, std::vector<glm::vec3> &norm
       normals.push_back(glm::normalize(glm::vec3(x,y, z+depth)));  //C
       normals.push_back(glm::normalize(glm::vec3(x+2.0f/divisions,y, z+depth)));  //D
 
-
-
-
-
     }
 
   persp_num = points.size() - persp_start;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   cout << endl << endl;
   cout << "initializing sliceobj finished at: " << endl;

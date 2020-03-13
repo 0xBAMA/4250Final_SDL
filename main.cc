@@ -44,7 +44,7 @@ Scene scene;
 
 int frame_count = 0;
 
-//other globals (glow_balls)
+//other globals
 float t = 0.0;
 float tilt = 0.0;
 float yoffset = 0.0;
@@ -68,30 +68,9 @@ void display()
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-  //do fake compute
-  //scene.compute();  //only runs on dedicated gpu
-
-    // this does a few things -
-/*
-
-  - first, change the bindings around
-
-    do the computation, getting values for next, based on the state of current
-    set a memory barrier so that image access can't happen
-    change the value of current to that of next,
-    change the value of
-
-*/
-
-
-
-
-
   // display functions
   scene.draw();
 
-  // glFlush();
   glutSwapBuffers();
   glutPostRedisplay();
 }
@@ -109,7 +88,6 @@ void keyboard(unsigned char key, int x, int y)
       exit(EXIT_SUCCESS);
       break;
 
-
     case '=':   //+
       scale *= 0.9;
       glUniform1fv(glGetUniformLocation(scene.get_draw_shader(), "scale"), 1, &scale);
@@ -123,20 +101,15 @@ void keyboard(unsigned char key, int x, int y)
       break;
 
 
-
     case 'f':
       glutFullScreenToggle(); //specific to freeglut
       break;
 
-
-
     case 'g':
       scene.compute();
-      glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);  // THIS SHOULD ENSURE COHERENCY
+      // THIS SHOULD ENSURE COHERENCY - 3/12/20 not sure if this is true? maybe only neccesary to prevent the display function from using the wrong data?
+      glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
       break;
-
-
-
 
 //movement
     case 'w':
@@ -163,8 +136,6 @@ void keyboard(unsigned char key, int x, int y)
       texture_offset -= glm::vec3(0,0,0.005);
       break;
 
-
-
     case 'c':
       texture_scale*=0.9;
       glUniform1fv(glGetUniformLocation(scene.get_draw_shader(), "uniform_scale"), 1, &texture_scale);
@@ -175,10 +146,6 @@ void keyboard(unsigned char key, int x, int y)
       glUniform1fv(glGetUniformLocation(scene.get_draw_shader(), "uniform_scale"), 1, &texture_scale);
       break;
 
-
-
-
-
     case 'u':
       // location += glm::vec3(0,0.05,0);
       yoffset += 0.1;
@@ -188,9 +155,6 @@ void keyboard(unsigned char key, int x, int y)
       // location -= glm::vec3(0,0.1,0);
       yoffset -= 0.1;
       break;
-
-
-
 
 //rotation
     case 't':
@@ -203,14 +167,6 @@ void keyboard(unsigned char key, int x, int y)
       tilt -= 0.1;
       break;
 
-
-
-
-
-
-
-
-
     case ',':
       glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
       glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -220,13 +176,6 @@ void keyboard(unsigned char key, int x, int y)
       glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
       break;
-
-
-
-
-
-
-
 
     case 'z':
       t+=0.08;
@@ -240,44 +189,6 @@ void keyboard(unsigned char key, int x, int y)
 
   glutPostRedisplay();
 }
-
-//----------------------------------------------------------------------------
-//
-// void mouse( int button, int state, int x, int y )
-// {
-//   if ( state == GLUT_DOWN )
-// 	{
-// 		switch( button )
-// 		{
-// 		    case GLUT_LEFT_BUTTON:    cout << "left" << endl;   break;
-// 		    case GLUT_MIDDLE_BUTTON:  cout << "middle" << endl; break;
-// 		    case GLUT_RIGHT_BUTTON:   cout << "right" << endl;  break;
-// 		}
-//
-//     if(button == GLUT_LEFT_BUTTON)
-//     {
-//
-//       //clear the screen
-//       // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//
-//         //draw with selection colors
-//
-//       //selection handling code - using input x and y
-//       y = glutGet( GLUT_WINDOW_HEIGHT ) - y;
-//
-//       unsigned char pixel[4];
-//       glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
-//
-//       cout << "color at click is r:" << (int)pixel[0] << " g:" << (int)pixel[1] << " b:" << (int)pixel[2] << endl;
-//
-//       //clear the screen
-//       // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//
-//       glutPostRedisplay();
-//
-//     }
-//   }
-// }
 
 //----------------------------------------------------------------------------
 
@@ -306,21 +217,9 @@ void timer(int)
 
 //----------------------------------------------------------------------------
 
-
-void idle( void )
-{
-	// glutPostRedisplay();
-}
-
-
-//----------------------------------------------------------------------------
-
 int main(int argc, char **argv)
 {
-
-
   // printf("\033[H\033[J"); //clear screen
-
 
   glutInit(&argc, argv);
   glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);  //doesn't look as good
@@ -345,7 +244,7 @@ int main(int argc, char **argv)
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
   // glutMouseFunc( mouse );
-  glutIdleFunc( idle );
+  // glutIdleFunc( idle );
   glutTimerFunc(1000.0/60.0, timer, 0);
 
   scene.init();

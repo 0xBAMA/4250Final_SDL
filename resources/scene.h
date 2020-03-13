@@ -390,6 +390,21 @@ void Scene::gpu_setup()
 void Scene::compute()
 {
 
+  //do fake compute
+  //scene.compute();  //only runs on dedicated gpu
+
+    // this does a few things -
+/*
+
+  - first, change the bindings around
+
+    do the computation, getting values for next, based on the state of current
+    set a memory barrier so that image access can't happen
+    change the value of current to that of next,
+    change the value of
+
+*/
+
   //first thing's first, swap the buffers being used so that we will be displaying the last computed next frame
     //and we will be writing to the opposite one
   frame_count++;
