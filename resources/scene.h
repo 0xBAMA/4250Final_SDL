@@ -229,8 +229,6 @@ void Scene::draw()
 
 void Scene::gpu_setup()
 {
-
-
   //COMPILE AND USE SHADERS
 
   //normal
@@ -250,9 +248,6 @@ void Scene::gpu_setup()
   std::vector<unsigned char> image_data;
 
   unsigned error = lodepng::decode( image_data, width, height, TEX_PATH, LodePNGColorType::LCT_RGBA, 8 );
-
-
-
 
 
   // GL_MAX_VERTEX_IMAGE_UNIFORMS

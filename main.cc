@@ -70,6 +70,7 @@ void display()
 
 
   //do fake compute
+  //scene.compute();  //only runs on dedicated gpu
 
     // this does a few things -
 /*
@@ -241,42 +242,42 @@ void keyboard(unsigned char key, int x, int y)
 }
 
 //----------------------------------------------------------------------------
-
-void mouse( int button, int state, int x, int y )
-{
-  if ( state == GLUT_DOWN )
-	{
-		switch( button )
-		{
-		    case GLUT_LEFT_BUTTON:    cout << "left" << endl;   break;
-		    case GLUT_MIDDLE_BUTTON:  cout << "middle" << endl; break;
-		    case GLUT_RIGHT_BUTTON:   cout << "right" << endl;  break;
-		}
-
-    if(button == GLUT_LEFT_BUTTON)
-    {
-
-      //clear the screen
-      // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        //draw with selection colors
-
-      //selection handling code - using input x and y
-      y = glutGet( GLUT_WINDOW_HEIGHT ) - y;
-
-      unsigned char pixel[4];
-      glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
-
-      cout << "color at click is r:" << (int)pixel[0] << " g:" << (int)pixel[1] << " b:" << (int)pixel[2] << endl;
-
-      //clear the screen
-      // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-      glutPostRedisplay();
-
-    }
-  }
-}
+//
+// void mouse( int button, int state, int x, int y )
+// {
+//   if ( state == GLUT_DOWN )
+// 	{
+// 		switch( button )
+// 		{
+// 		    case GLUT_LEFT_BUTTON:    cout << "left" << endl;   break;
+// 		    case GLUT_MIDDLE_BUTTON:  cout << "middle" << endl; break;
+// 		    case GLUT_RIGHT_BUTTON:   cout << "right" << endl;  break;
+// 		}
+//
+//     if(button == GLUT_LEFT_BUTTON)
+//     {
+//
+//       //clear the screen
+//       // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//
+//         //draw with selection colors
+//
+//       //selection handling code - using input x and y
+//       y = glutGet( GLUT_WINDOW_HEIGHT ) - y;
+//
+//       unsigned char pixel[4];
+//       glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
+//
+//       cout << "color at click is r:" << (int)pixel[0] << " g:" << (int)pixel[1] << " b:" << (int)pixel[2] << endl;
+//
+//       //clear the screen
+//       // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//
+//       glutPostRedisplay();
+//
+//     }
+//   }
+// }
 
 //----------------------------------------------------------------------------
 
@@ -318,7 +319,7 @@ int main(int argc, char **argv)
 {
 
 
-  printf("\033[H\033[J"); //clear screen
+  // printf("\033[H\033[J"); //clear screen
 
 
   glutInit(&argc, argv);
@@ -343,7 +344,7 @@ int main(int argc, char **argv)
 
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
-  glutMouseFunc( mouse );
+  // glutMouseFunc( mouse );
   glutIdleFunc( idle );
   glutTimerFunc(1000.0/60.0, timer, 0);
 
