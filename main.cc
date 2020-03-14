@@ -59,8 +59,6 @@ glm::vec2 rotation = glm::vec2(0,0);
 
 glm::vec3 texture_offset = glm::vec3(0,0,0);
 
-//----------------------------------------------------------------------------
-
 
 void keyboard(unsigned char key, int x, int y)
 {
@@ -282,6 +280,111 @@ int main(int argc, char **argv)
         exit = true;
       if (event.type == SDL_KEYUP  && event.key.keysym.sym == SDLK_ESCAPE)
         exit = true;
+
+      if(event.type == SDL_KEYDOWN)
+      {
+        //switch based on key press
+        switch( event.key.keysym.sym )
+        {
+          case '=':   //+
+            scale *= 0.9;
+            glUniform1fv(glGetUniformLocation(scene.get_draw_shader(), "scale"), 1, &scale);
+            cout << scale << endl;
+            break;
+
+          case '-':   //-
+            scale /= 0.9;
+            glUniform1fv(glGetUniformLocation(scene.get_draw_shader(), "scale"), 1, &scale);
+            cout << scale << endl;
+            break;
+
+
+          case 'f':
+            glutFullScreenToggle(); //specific to freeglut
+            break;
+
+          case 'g':
+            scene.compute();
+            // THIS SHOULD ENSURE COHERENCY - 3/12/20 not sure if this is true? maybe only neccesary to prevent the display function from using the wrong data?
+            glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+            break;
+
+      //movement
+          case 'w':
+            texture_offset += glm::vec3(0.005,0,0);
+            break;
+
+          case 's':
+            texture_offset -= glm::vec3(0.005,0,0);
+            break;
+
+          case 'a':
+            texture_offset += glm::vec3(0,0.005,0);
+            break;
+
+          case 'd':
+            texture_offset -= glm::vec3(0,0.005,0);
+            break;
+
+          case 'q':
+            texture_offset += glm::vec3(0,0,0.005);
+            break;
+
+          case 'e':
+            texture_offset -= glm::vec3(0,0,0.005);
+            break;
+
+          case 'c':
+            texture_scale*=0.9;
+            glUniform1fv(glGetUniformLocation(scene.get_draw_shader(), "uniform_scale"), 1, &texture_scale);
+            break;
+
+          case 'v':
+            texture_scale/=0.9;
+            glUniform1fv(glGetUniformLocation(scene.get_draw_shader(), "uniform_scale"), 1, &texture_scale);
+            break;
+
+          case 'u':
+            // location += glm::vec3(0,0.05,0);
+            yoffset += 0.1;
+            break;
+
+          case 'i':
+            // location -= glm::vec3(0,0.1,0);
+            yoffset -= 0.1;
+            break;
+
+      //rotation
+          case 't':
+            // rotation += glm::vec2(0,0.1);
+            tilt += 0.1;
+            break;
+
+          case 'y':
+            // rotation -= glm::vec2(0,0.1);
+            tilt -= 0.1;
+            break;
+
+          case ',':
+            glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            break;
+
+          case '.':
+            glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            break;
+
+          case 'z':
+            t+=0.08;
+            break;
+
+          case 'x':
+            // yoffset = 2.0f;  tilt = -0.4f;
+            yoffset = 1.55f;  tilt = -0.3f;
+            break;
+        }
+      }
     }
 
   //clear and draw
