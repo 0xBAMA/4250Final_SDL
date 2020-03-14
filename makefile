@@ -2,6 +2,8 @@ CC = g++
 
 MAKE_EXE = -o exe -time
 
+SDL_FLAGS = $(shell pkg-config sdl2 --cflags --libs)
+
 GL_FLAGS = -lglut -lGLEW -lGL -lGLU
 
 LODEPNG_FLAGS = resources/LodePNG/lodepng.cpp -ansi -O3 -std=c++11
@@ -11,4 +13,4 @@ LODEPNG_FLAGS = resources/LodePNG/lodepng.cpp -ansi -O3 -std=c++11
 all: build
 
 build: main.cc
-	$(CC) main.cc $(GL_FLAGS) $(LODEPNG_FLAGS) $(MAKE_EXE)
+	$(CC) main.cc $(MAKE_EXE) $(GL_FLAGS) $(LODEPNG_FLAGS) $(SDL_FLAGS)

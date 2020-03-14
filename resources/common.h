@@ -19,9 +19,15 @@ using std::endl;
 
 //************************************************
 
+
 // GLEW
 #define GLEW_STATIC
 #include <GL/glew.h>
+
+//SDL includes - windowing, gl context, system info
+#include <SDL.h>
+//allows you to run OpenGL inside of SDL2
+#include <SDL_opengl.h>
 
 // GLUT
 #include <GL/freeglut.h>
