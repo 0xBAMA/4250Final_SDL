@@ -120,7 +120,7 @@ int main(int argc, char **argv)
   SDL_Window * window;
   SDL_GLContext GLcontext;
 
-  window = SDL_CreateWindow( "OpenGL Window", 0, 0, total_screen_width, total_screen_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS );
+  window = SDL_CreateWindow( "OpenGL Window", dm.w/4, dm.h/4, total_screen_width, total_screen_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS );
   GLcontext = SDL_GL_CreateContext( window );
 
   SDL_GL_MakeCurrent(window, GLcontext);
@@ -195,7 +195,10 @@ int main(int argc, char **argv)
             break;
 
           case 'g':
-		frame_upd8=!frame_upd8;
+		//frame_upd8=!frame_upd8;
+		scene.compute();
+            // THIS SHOULD ENSURE COHERENCY - 3/12/20 not sure if this is true? maybe only neccesary to prevent the display function from using the wrong data?
+            glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);  
             break;
 
       //movement
@@ -298,12 +301,12 @@ int main(int argc, char **argv)
 
     scene.draw();
 	  
-	  if(frame_upd8)
-	  {
-	    scene.compute();
+	  //if(frame_upd8)
+	  //{
+	    //scene.compute();
             // THIS SHOULD ENSURE COHERENCY - 3/12/20 not sure if this is true? maybe only neccesary to prevent the display function from using the wrong data?
-            glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);  
-	  }
+            //glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);  
+	  //}
 
     SDL_GL_SwapWindow(window);                      //swap the double buffers to display
 
