@@ -44,6 +44,8 @@ Scene scene;
 
 int frame_count = 0;
 
+bool frame_upd8=false;
+
 //other globals
 float t = 0.0f;
 float tilt = 0.0f;
@@ -86,9 +88,7 @@ void keyboard(unsigned char key, int x, int y)
       break;
 
     case 'g':
-      scene.compute();
-      // THIS SHOULD ENSURE COHERENCY - 3/12/20 not sure if this is true? maybe only neccesary to prevent the display function from using the wrong data?
-      glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+      frame_upd8 = !frame_upd8;
       break;
 
 //movement
@@ -304,9 +304,7 @@ int main(int argc, char **argv)
             break;
 
           case 'g':
-            scene.compute();
-            // THIS SHOULD ENSURE COHERENCY - 3/12/20 not sure if this is true? maybe only neccesary to prevent the display function from using the wrong data?
-            glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+		frame_upd8=!frame_upd8;
             break;
 
       //movement
@@ -408,6 +406,13 @@ int main(int argc, char **argv)
 
 
     scene.draw();
+	  
+	  if(frame_upd8)
+	  {
+	    scene.compute();
+            // THIS SHOULD ENSURE COHERENCY - 3/12/20 not sure if this is true? maybe only neccesary to prevent the display function from using the wrong data?
+            glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);  
+	  }
 
     SDL_GL_SwapWindow(window);                      //swap the double buffers to display
 
