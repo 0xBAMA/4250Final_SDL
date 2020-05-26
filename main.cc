@@ -62,115 +62,6 @@ glm::vec2 rotation = glm::vec2(0,0);
 glm::vec3 texture_offset = glm::vec3(0,0,0);
 
 
-void keyboard(unsigned char key, int x, int y)
-{
-  switch (key) {
-
-    case 033:
-      exit(EXIT_SUCCESS);
-      break;
-
-    case '=':   //+
-      scale *= 0.9;
-      glUniform1fv(glGetUniformLocation(scene.get_draw_shader(), "scale"), 1, &scale);
-      cout << scale << endl;
-      break;
-
-    case '-':   //-
-      scale /= 0.9;
-      glUniform1fv(glGetUniformLocation(scene.get_draw_shader(), "scale"), 1, &scale);
-      cout << scale << endl;
-      break;
-
-
-    case 'f':
-      glutFullScreenToggle(); //specific to freeglut
-      break;
-
-    case 'g':
-      frame_upd8 = !frame_upd8;
-      break;
-
-//movement
-    case 'w':
-      texture_offset += glm::vec3(0.005,0,0);
-      break;
-
-    case 's':
-      texture_offset -= glm::vec3(0.005,0,0);
-      break;
-
-    case 'a':
-      texture_offset += glm::vec3(0,0.005,0);
-      break;
-
-    case 'd':
-      texture_offset -= glm::vec3(0,0.005,0);
-      break;
-
-    case 'q':
-      texture_offset += glm::vec3(0,0,0.005);
-      break;
-
-    case 'e':
-      texture_offset -= glm::vec3(0,0,0.005);
-      break;
-
-    case 'c':
-      texture_scale*=0.9;
-      glUniform1fv(glGetUniformLocation(scene.get_draw_shader(), "uniform_scale"), 1, &texture_scale);
-      break;
-
-    case 'v':
-      texture_scale/=0.9;
-      glUniform1fv(glGetUniformLocation(scene.get_draw_shader(), "uniform_scale"), 1, &texture_scale);
-      break;
-
-    case 'u':
-      // location += glm::vec3(0,0.05,0);
-      yoffset += 0.1;
-      break;
-
-    case 'i':
-      // location -= glm::vec3(0,0.1,0);
-      yoffset -= 0.1;
-      break;
-
-//rotation
-    case 't':
-      // rotation += glm::vec2(0,0.1);
-      tilt += 0.1;
-      break;
-
-    case 'y':
-      // rotation -= glm::vec2(0,0.1);
-      tilt -= 0.1;
-      break;
-
-    case ',':
-      glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-      glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      break;
-
-    case '.':
-      glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      break;
-
-    case 'z':
-      t+=0.08;
-      break;
-
-    case 'x':
-      // yoffset = 2.0f;  tilt = -0.4f;
-      yoffset = 1.55f;  tilt = -0.3f;
-      break;
-  }
-
-}
-
-
-
 int main(int argc, char **argv)
 {
   // printf("\033[H\033[J"); //clear screen
@@ -208,7 +99,7 @@ int main(int argc, char **argv)
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
   SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1);
-  SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 8);
+  //SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 8);
 
   // GL 4.5 + GLSL 450
   const char* glsl_version = "#version 450";
@@ -223,8 +114,8 @@ int main(int argc, char **argv)
 
   //pulling these out because I'm going to try to span the whole screen with
   //the window, in a way that's flexible on different resolution screens
-  int total_screen_width = dm.w;
-  int total_screen_height = dm.h;
+  int total_screen_width = dm.w/2;
+  int total_screen_height = dm.h/2;
 
   SDL_Window * window;
   SDL_GLContext GLcontext;
